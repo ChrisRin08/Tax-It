@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App -->
+    <string name="app_name">TaxIt</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_calculator">Calculator</string>
+    <string name="nav_history">History</string>
+
+    <!-- Calculator Screen — Dark Panel -->
+    <string name="label_subtotal">Subtotal</string>
+    <string name="label_tax">Tax</string>
+    <string name="label_total">TOTAL</string>
+    <string name="value_default">$0.00</string>
+
+    <!-- Calculator Screen — ZIP Section -->
+    <string name="label_tax_rate_lookup">TAX RATE LOOKUP</string>
+    <string name="hint_zip">ZIP Code</string>
+    <string name="label_state_rate">State</string>
+    <string name="label_county_rate">County</string>
+    <string name="label_city_rate">City</string>
+    <string name="label_combined_rate">Combined</string>
+    <string name="status_loading">Fetching rate…</string>
+    <string name="status_error">Invalid ZIP or network error</string>
+    <string name="status_success">Rate found</string>
+
+    <!-- Calculator Screen — ZIP Summary Bar (State B) -->
+    <string name="label_edit">Edit</string>
+    <string name="label_zip_summary">%1$s, %2$s — %3$s%%</string>
+
+    <!-- Calculator Screen — Line Items -->
+    <string name="hint_item_description">Description</string>
+    <string name="hint_item_price">$0.00</string>
+    <string name="button_add_item">+ Add Item</string>
+    <string name="button_calculate">Calculate Tax</string>
+    <string name="button_clear">Clear All</string>
+    <string name="content_desc_delete">Delete item</string>
+
+    <!-- Calculator Screen — Calculation Mode Toggle -->
+    <string name="mode_pre_tax">Pre-Tax</string>
+    <string name="mode_tax_inclusive">Tax-Inclusive</string>
+
+    <!-- History Screen -->
+    <string name="title_history">Calculation History</string>
+    <string name="label_zip_prefix">ZIP: </string>
+    <string name="label_amount">Amount</string>
+    <string name="label_tax_applied">Tax</string>
+    <string name="label_total_history">Total</string>
+    <string name="empty_history">No calculations yet</string>
+
+    <string name="hint_item_quantity">Qty</string>
+    <string name="symbol_delete">✕</string>
+
+</resources>

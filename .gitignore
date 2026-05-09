@@ -1,0 +1,17 @@
+# Built files
+build/
+app/build/
+.gradle/
+
+# API keys and sensitive data
+local.properties
+*.keystore
+*.jks
+
+# Android Studio files
+.idea/
+*.iml
+.DS_Store
+
+# Google Services
+google-services.json

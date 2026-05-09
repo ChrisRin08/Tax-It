@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
+
+    <!-- Item description -->
+    <EditText
+        android:id="@+id/et_item_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:hint="@string/hint_item_description"
+        android:textColor="@color/text_dark"
+        android:textColorHint="@color/text_hint"
+        android:textSize="14sp"
+        android:backgroundTint="@color/divider"
+        android:inputType="text"
+        android:autofillHints="off"
+        android:padding="8dp"/>
+
+    <!-- Quantity -->
+    <EditText
+        android:id="@+id/et_item_quantity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/hint_item_quantity"
+        android:textColor="@color/text_dark"
+        android:textColorHint="@color/text_hint"
+        android:textSize="14sp"
+        android:backgroundTint="@color/divider"
+        android:inputType="number"
+        android:autofillHints="off"
+        android:padding="8dp"
+        android:layout_marginStart="6dp"/>
+
+    <!-- Unit price -->
+    <EditText
+        android:id="@+id/et_item_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:hint="@string/hint_item_price"
+        android:textColor="@color/text_dark"
+        android:textColorHint="@color/text_hint"
+        android:textSize="14sp"
+        android:backgroundTint="@color/divider"
+        android:inputType="numberDecimal"
+        android:autofillHints="off"
+        android:padding="8dp"
+        android:layout_marginStart="6dp"/>
+
+    <!-- Delete button -->
+    <TextView
+        android:id="@+id/btn_delete_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/symbol_delete"
+        android:textColor="@color/red_accent"
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:contentDescription="@string/content_desc_delete"/>
+
+</LinearLayout>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Brand Colors -->
+    <color name="red_accent">#FFE53935</color>
+    <color name="green_accent">#FF4CAF50</color>
+
+    <!-- Dark Panel (top section only) -->
+    <color name="panel_dark">#FF0D0D0D</color>
+
+    <!-- Content Area (everything below the dark panel) -->
+    <color name="background_white">#FFFFFFFF</color>
+    <color name="surface_light">#FFF5F5F5</color>
+    <color name="card_white">#FFFFFFFF</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#FFFFFFFF</color>
+    <color name="text_dark">#FF1A1A1A</color>
+    <color name="text_secondary_dark">#FF757575</color>
+    <color name="text_hint">#FFB0B0B0</color>
+
+    <!-- Panel text (used inside dark panel) -->
+    <color name="text_secondary">#FFB0B0B0</color>
+
+    <!-- Divider -->
+    <color name="divider">#FFE0E0E0</color>
+
+    <!-- Buttons -->
+    <color name="button_calculate">#FF1A1A1A</color>
+    <color name="button_clear">#FFE53935</color>
+
+    <!-- Bottom Nav -->
+    <color name="nav_bar">#FFFFFFFF</color>
+    <color name="nav_selected">#FFE53935</color>
+    <color name="nav_unselected">#FF9E9E9E</color>
+
+    <!-- Aliases for backward compatibility -->
+    <color name="background_dark">@color/panel_dark</color>
+    <color name="surface_dark">@color/surface_light</color>
+    <color name="button_primary">@color/button_calculate</color>
+
+</resources>
