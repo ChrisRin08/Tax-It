@@ -16,3 +16,4 @@ local.properties
 # Google Services
 google-services.json
 *.mp4
+.kotlin/

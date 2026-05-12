@@ -20,9 +20,9 @@
     <string name="label_state_rate">State</string>
     <string name="label_county_rate">County</string>
     <string name="label_city_rate">City</string>
-    <string name="label_combined_rate">Combined</string>
+    <string name="label_combined_rate">Combined Rate</string>
     <string name="status_loading">Fetching rate…</string>
-    <string name="status_error">Invalid ZIP or network error</string>
+    <string name="status_error">Couldn’t fetch the tax rate. Check your connection and try again.</string>
     <string name="status_success">Rate found</string>
 
     <!-- Calculator Screen — ZIP Summary Bar (State B) -->
@@ -47,7 +47,13 @@
     <string name="label_amount">Amount</string>
     <string name="label_tax_applied">Tax</string>
     <string name="label_total_history">Total</string>
-    <string name="empty_history">No calculations yet</string>
+    <string name="empty_history">No saved calculations yet. Run a tax calculation to see it here.</string>
+    <string name="button_clear_history">Clear All</string>
+    <string name="content_desc_delete_history">Delete saved calculation</string>
+    <string name="dialog_clear_history_title">Clear all history?</string>
+    <string name="dialog_clear_history_message">This will permanently delete every saved calculation.</string>
+    <string name="dialog_clear_history_confirm">Clear All</string>
+    <string name="dialog_cancel">Cancel</string>
 
     <string name="hint_item_quantity">Qty</string>
     <string name="symbol_delete">✕</string>

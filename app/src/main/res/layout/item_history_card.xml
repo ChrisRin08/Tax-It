@@ -15,16 +15,51 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- ZIP and city label -->
-        <TextView
-            android:id="@+id/tv_history_zip"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ZIP: 90001 — Los Angeles"
-            android:textColor="@color/text_dark"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- ZIP and city label -->
+                <TextView
+                    android:id="@+id/tv_history_zip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ZIP: 90001 — Los Angeles"
+                    android:textColor="@color/text_dark"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_history_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="May 11, 2026 12:45 PM"
+                    android:textColor="@color/text_secondary_dark"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/btn_delete_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/content_desc_delete_history"
+                android:padding="8dp"
+                android:text="@string/symbol_delete"
+                android:textColor="@color/red_accent"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
 
         <!-- Amount row -->
         <LinearLayout

@@ -10,11 +10,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.christianrincon.taxit.R
 import com.christianrincon.taxit.model.LineItem
+import java.text.NumberFormat
+import java.util.Locale
 
-class LineItemAdapter : RecyclerView.Adapter<LineItemAdapter.LineItemViewHolder>() {
+class LineItemAdapter(
+    private val onItemChanged: (position: Int, item: LineItem) -> Unit,
+    private val onItemDeleted: (position: Int) -> Unit
+) : RecyclerView.Adapter<LineItemAdapter.LineItemViewHolder>() {
 
     // The list of items the RecyclerView will display
     private val items = mutableListOf<LineItem>()
+    private val currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US)
+    private var shouldFormatPricesAsCurrency = false
 
     // Called when the RecyclerView needs a new row view
     // It inflates item_line_item.xml and wraps it in a ViewHolder
@@ -34,6 +41,7 @@ class LineItemAdapter : RecyclerView.Adapter<LineItemAdapter.LineItemViewHolder>
 
     // Adds a blank new row to the list
     fun addItem() {
+        shouldFormatPricesAsCurrency = false
         items.add(LineItem())
         notifyItemInserted(items.size - 1)
     }
@@ -48,7 +56,22 @@ class LineItemAdapter : RecyclerView.Adapter<LineItemAdapter.LineItemViewHolder>
 
     // Clears all rows
     fun clearItems() {
+        shouldFormatPricesAsCurrency = false
         items.clear()
+        notifyDataSetChanged()
+    }
+
+    fun submitItems(newItems: List<LineItem>) {
+        if (items == newItems) return
+
+        shouldFormatPricesAsCurrency = false
+        items.clear()
+        items.addAll(newItems.map { it.copy() })
+        notifyDataSetChanged()
+    }
+
+    fun formatPricesAsCurrency() {
+        shouldFormatPricesAsCurrency = true
         notifyDataSetChanged()
     }
 
@@ -67,6 +90,7 @@ class LineItemAdapter : RecyclerView.Adapter<LineItemAdapter.LineItemViewHolder>
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
                     items[pos].description = s.toString()
+                    onItemChanged(pos, items[pos].copy())
                 }
             }
 
@@ -79,6 +103,7 @@ class LineItemAdapter : RecyclerView.Adapter<LineItemAdapter.LineItemViewHolder>
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
                     items[pos].quantity = s.toString().toIntOrNull() ?: 1
+                    onItemChanged(pos, items[pos].copy())
                 }
             }
 
@@ -90,7 +115,9 @@ class LineItemAdapter : RecyclerView.Adapter<LineItemAdapter.LineItemViewHolder>
             override fun afterTextChanged(s: Editable?) {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    items[pos].price = s.toString().toDoubleOrNull() ?: 0.0
+                    shouldFormatPricesAsCurrency = false
+                    items[pos].price = s.toString().toPriceDoubleOrNull() ?: 0.0
+                    onItemChanged(pos, items[pos].copy())
                 }
             }
 
@@ -108,7 +135,7 @@ class LineItemAdapter : RecyclerView.Adapter<LineItemAdapter.LineItemViewHolder>
             // Fill fields with existing data
             etDescription.setText(item.description)
             etQuantity.setText(if (item.quantity > 1) item.quantity.toString() else "")
-            etPrice.setText(if (item.price > 0) item.price.toString() else "")
+            etPrice.setText(formatPriceForDisplay(item.price))
 
             // Reattach listeners
             etDescription.addTextChangedListener(descriptionWatcher)
@@ -119,9 +146,25 @@ class LineItemAdapter : RecyclerView.Adapter<LineItemAdapter.LineItemViewHolder>
             btnDelete.setOnClickListener {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
-                    removeItem(pos)
+                    onItemDeleted(pos)
                 }
             }
+        }
+    }
+
+    private fun String.toPriceDoubleOrNull(): Double? {
+        val normalized = replace("$", "")
+            .replace(",", "")
+            .trim()
+        return normalized.toDoubleOrNull()
+    }
+
+    private fun formatPriceForDisplay(price: Double): String {
+        if (price <= 0.0) return ""
+        return if (shouldFormatPricesAsCurrency) {
+            currencyFormatter.format(price)
+        } else {
+            price.toString()
         }
     }
 }
