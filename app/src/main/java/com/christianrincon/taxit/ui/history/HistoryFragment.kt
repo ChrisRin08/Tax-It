@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class HistoryFragment : Fragment() {
 
+    // Reads saved calculations from Room through the ViewModel.
     private val viewModel: HistoryViewModel by viewModels()
     private lateinit var historyAdapter: HistoryAdapter
 
@@ -45,6 +46,7 @@ class HistoryFragment : Fragment() {
 
         historyAdapter = HistoryAdapter(
             onDeleteClicked = { id ->
+                // Deletes only the card the user tapped.
                 viewModel.deleteCalculation(id)
             }
         )
@@ -57,6 +59,7 @@ class HistoryFragment : Fragment() {
     }
 
     private fun showClearHistoryConfirmationDialog() {
+        // Clear All is destructive, so ask before deleting every record.
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.dialog_clear_history_title)
             .setMessage(R.string.dialog_clear_history_message)
@@ -73,6 +76,7 @@ class HistoryFragment : Fragment() {
         val btnClearHistory = view.findViewById<TextView>(R.id.btn_clear_history)
 
         viewLifecycleOwner.lifecycleScope.launch {
+            // Updates the list whenever Room emits new history data.
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.calculationHistory.collect { calculations ->
                     historyAdapter.submitList(calculations.map { it.toHistoryEntry() })
@@ -92,6 +96,7 @@ class HistoryFragment : Fragment() {
     }
 
     private fun TaxCalculationEntity.toHistoryEntry(): HistoryEntry {
+        // Converts the database row into the simpler model used by the adapter.
         return HistoryEntry(
             id = id,
             zip = zipCode,

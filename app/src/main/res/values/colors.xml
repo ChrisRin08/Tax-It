@@ -2,7 +2,9 @@
 <resources>
 
     <!-- Brand Colors -->
-    <color name="red_accent">#FFE53935</color>
+    <color name="red_accent">#FF6C63FF</color>
+    <color name="accent_light">#FFEDEBFF</color>
+    <color name="accent_dark">#FF4B45C6</color>
     <color name="green_accent">#FF4CAF50</color>
 
     <!-- Dark Panel (top section only) -->
@@ -27,11 +29,11 @@
 
     <!-- Buttons -->
     <color name="button_calculate">#FF1A1A1A</color>
-    <color name="button_clear">#FFE53935</color>
+    <color name="button_clear">#FF4B45C6</color>
 
     <!-- Bottom Nav -->
     <color name="nav_bar">#FFFFFFFF</color>
-    <color name="nav_selected">#FFE53935</color>
+    <color name="nav_selected">#FF6C63FF</color>
     <color name="nav_unselected">#FF9E9E9E</color>
 
     <!-- Aliases for backward compatibility -->

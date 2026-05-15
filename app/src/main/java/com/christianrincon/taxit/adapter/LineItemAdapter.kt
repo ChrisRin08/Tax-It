@@ -18,35 +18,33 @@ class LineItemAdapter(
     private val onItemDeleted: (position: Int) -> Unit
 ) : RecyclerView.Adapter<LineItemAdapter.LineItemViewHolder>() {
 
-    // The list of items the RecyclerView will display
+    // Local row copies used for binding RecyclerView fields.
     private val items = mutableListOf<LineItem>()
     private val currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US)
     private var shouldFormatPricesAsCurrency = false
 
-    // Called when the RecyclerView needs a new row view
-    // It inflates item_line_item.xml and wraps it in a ViewHolder
+    // Creates a new row view when RecyclerView needs one.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LineItemViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_line_item, parent, false)
         return LineItemViewHolder(view)
     }
 
-    // Called to fill each row with its data
+    // Fills each visible row with the matching line item.
     override fun onBindViewHolder(holder: LineItemViewHolder, position: Int) {
         holder.bind(items[position], position)
     }
 
-    // Tells the RecyclerView how many rows to show
     override fun getItemCount(): Int = items.size
 
-    // Adds a blank new row to the list
+    // Adds a blank row when the user taps Add Item.
     fun addItem() {
         shouldFormatPricesAsCurrency = false
         items.add(LineItem())
         notifyItemInserted(items.size - 1)
     }
 
-    // Deletes a row at a specific position
+    // Removes a row from the adapter list.
     fun removeItem(position: Int) {
         if (position < items.size) {
             items.removeAt(position)
@@ -54,7 +52,7 @@ class LineItemAdapter(
         }
     }
 
-    // Clears all rows
+    // Clears rows when the calculator is reset.
     fun clearItems() {
         shouldFormatPricesAsCurrency = false
         items.clear()
@@ -62,6 +60,7 @@ class LineItemAdapter(
     }
 
     fun submitItems(newItems: List<LineItem>) {
+        // Refreshes adapter rows from the ViewModel source of truth.
         if (items == newItems) return
 
         shouldFormatPricesAsCurrency = false
@@ -71,12 +70,12 @@ class LineItemAdapter(
     }
 
     fun formatPricesAsCurrency() {
+        // Rebinds rows so prices display like $100.00 after calculation.
         shouldFormatPricesAsCurrency = true
         notifyDataSetChanged()
     }
 
-    // ViewHolder holds references to the views inside each row
-    // so we don't have to find them every time the row scrolls
+    // Holds the views for one line item row.
     inner class LineItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val etDescription = itemView.findViewById<EditText>(R.id.et_item_description)
@@ -84,7 +83,7 @@ class LineItemAdapter(
         private val etPrice = itemView.findViewById<EditText>(R.id.et_item_price)
         private val btnDelete = itemView.findViewById<TextView>(R.id.btn_delete_item)
 
-        // Watchers defined as properties so we can remove them before rebinding
+        // Watchers notify the Fragment whenever the user edits a row.
         private val descriptionWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val pos = bindingAdapterPosition
@@ -127,22 +126,22 @@ class LineItemAdapter(
 
         fun bind(item: LineItem, position: Int) {
 
-            // Remove old listeners before setting text
+            // Remove listeners before setText so recycled rows do not fire duplicate updates.
             etDescription.removeTextChangedListener(descriptionWatcher)
             etQuantity.removeTextChangedListener(quantityWatcher)
             etPrice.removeTextChangedListener(priceWatcher)
 
-            // Fill fields with existing data
+            // Show the current row values from the adapter list.
             etDescription.setText(item.description)
-            etQuantity.setText(if (item.quantity > 1) item.quantity.toString() else "")
+            etQuantity.setText(item.quantity.toString())
             etPrice.setText(formatPriceForDisplay(item.price))
 
-            // Reattach listeners
+            // Reattach listeners after binding is complete.
             etDescription.addTextChangedListener(descriptionWatcher)
             etQuantity.addTextChangedListener(quantityWatcher)
             etPrice.addTextChangedListener(priceWatcher)
 
-            // Delete button — safe position check
+            // Use the current adapter position because RecyclerView rows can move.
             btnDelete.setOnClickListener {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
@@ -153,6 +152,7 @@ class LineItemAdapter(
     }
 
     private fun String.toPriceDoubleOrNull(): Double? {
+        // Allows prices typed as $100.00 or 1,000.00 to still calculate.
         val normalized = replace("$", "")
             .replace(",", "")
             .trim()
@@ -160,6 +160,7 @@ class LineItemAdapter(
     }
 
     private fun formatPriceForDisplay(price: Double): String {
+        // Keep blank rows visually empty until there is a real price.
         if (price <= 0.0) return ""
         return if (shouldFormatPricesAsCurrency) {
             currencyFormatter.format(price)

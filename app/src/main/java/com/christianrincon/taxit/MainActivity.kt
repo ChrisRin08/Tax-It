@@ -14,12 +14,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Get the nav controller from our fragment container
+        // Gets the navigation controller from the screen container.
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        // Connect bottom nav tabs to the nav controller
+        // Connects the bottom navigation tabs to Calculator and History.
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNav.setupWithNavController(navController)
     }

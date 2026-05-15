@@ -13,14 +13,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
+// Qualifier keeps the Ziptax Retrofit separate from other Retrofit instances.
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class ZiptaxRetrofit
 
+// Qualifier keeps the backup ZIP lookup Retrofit separate from Ziptax.
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class ZipLookupRetrofit
 
+// Provides network objects that Hilt can inject into the repository.
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
@@ -30,6 +33,7 @@ object NetworkModule {
     fun provideZiptaxOkHttpClient(): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor { chain ->
+                // Adds the Ziptax API key to tax requests only.
                 val request = chain.request().newBuilder()
                     .addHeader("X-API-Key", BuildConfig.ZIPTAX_API_KEY)
                     .build()
@@ -41,6 +45,7 @@ object NetworkModule {
     @Singleton
     @ZiptaxRetrofit
     fun provideZiptaxRetrofit(okHttpClient: OkHttpClient): Retrofit =
+        // Main Retrofit client for sales tax data.
         Retrofit.Builder()
             .baseUrl("https://api.zip-tax.com/")
             .client(okHttpClient)
@@ -51,6 +56,7 @@ object NetworkModule {
     @Singleton
     @ZipLookupRetrofit
     fun provideZipLookupRetrofit(): Retrofit =
+        // Backup Retrofit client for city/state ZIP lookup without an API key.
         Retrofit.Builder()
             .baseUrl("https://api.zippopotam.us/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -59,10 +65,12 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideTaxApiService(@ZiptaxRetrofit retrofit: Retrofit): TaxApiService =
+        // Creates the typed Ziptax API interface.
         retrofit.create(TaxApiService::class.java)
 
     @Provides
     @Singleton
     fun provideZipLookupApiService(@ZipLookupRetrofit retrofit: Retrofit): ZipLookupApiService =
+        // Creates the typed backup ZIP lookup API interface.
         retrofit.create(ZipLookupApiService::class.java)
 }

@@ -25,20 +25,20 @@
 
     <style name="TaxIt.Label">
         <item name="android:textColor">@color/text_secondary</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:letterSpacing">0.08</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="TaxIt.Value">
         <item name="android:textColor">@color/text_primary</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TaxIt.TotalValue">
         <item name="android:textColor">@color/green_accent</item>
-        <item name="android:textSize">26sp</item>
+        <item name="android:textSize">28sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 

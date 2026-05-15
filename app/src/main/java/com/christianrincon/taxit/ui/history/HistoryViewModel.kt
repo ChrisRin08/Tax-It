@@ -16,6 +16,7 @@ class HistoryViewModel @Inject constructor(
     private val taxRepository: TaxRepository
 ) : ViewModel() {
 
+    // Room emits saved calculations, and StateFlow makes them easy for the UI to collect.
     val calculationHistory: StateFlow<List<TaxCalculationEntity>> =
         taxRepository.getAllCalculations()
             .stateIn(
@@ -25,12 +26,14 @@ class HistoryViewModel @Inject constructor(
             )
 
     fun deleteCalculation(id: Long) {
+        // Delete work runs in viewModelScope so it survives brief UI changes.
         viewModelScope.launch {
             taxRepository.deleteCalculation(id)
         }
     }
 
     fun clearHistory() {
+        // Removes every saved calculation after the Fragment confirms with the user.
         viewModelScope.launch {
             taxRepository.deleteAllCalculations()
         }

@@ -18,23 +18,36 @@ class CalculatorViewModel @Inject constructor(
     private val taxRepository: TaxRepository
 ) : ViewModel() {
 
+    // Exposes ZIP lookup progress and results to the Fragment.
     private val _zipLookupState = MutableStateFlow<ZipLookupState>(ZipLookupState.Idle)
     val zipLookupState: StateFlow<ZipLookupState> = _zipLookupState.asStateFlow()
 
+    // The ViewModel is the source of truth for calculator rows.
     private val _lineItems = MutableStateFlow(listOf(LineItem()))
     val lineItems: StateFlow<List<LineItem>> = _lineItems.asStateFlow()
+
+    // Whole-order discount percent entered on the Calculator screen.
+    private val _discountPercent = MutableStateFlow(0.0)
+    val discountPercent: StateFlow<Double> = _discountPercent.asStateFlow()
 
     val subtotal: Double
         get() = _lineItems.value.sumOf { it.lineTotal() }
 
+    val discountAmount: Double
+        get() = subtotal * (_discountPercent.value / 100.0)
+
+    private val taxableAmount: Double
+        get() = (subtotal - discountAmount).coerceAtLeast(0.0)
+
     val taxAmount: Double
-        get() = subtotal * currentTaxRate()
+        get() = taxableAmount * currentTaxRate()
 
     val total: Double
-        get() = subtotal + taxAmount
+        get() = taxableAmount + taxAmount
 
     fun lookUpZipRate(zip: String) {
         val trimmedZip = zip.trim()
+        // Stop early if the user has not entered a full ZIP code.
         if (trimmedZip.length != ZIP_CODE_LENGTH) {
             _zipLookupState.value = ZipLookupState.Error(
                 zip = trimmedZip,
@@ -44,6 +57,7 @@ class CalculatorViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
+            // Loading disables Calculate until the lookup finishes.
             _zipLookupState.value = ZipLookupState.Loading(trimmedZip)
             _zipLookupState.value = try {
                 ZipLookupState.Success(
@@ -60,6 +74,7 @@ class CalculatorViewModel @Inject constructor(
     }
 
     fun hasSuccessfulRateForZip(zip: String): Boolean {
+        // Prevents calculating with an old rate after the ZIP field changes.
         val successState = _zipLookupState.value as? ZipLookupState.Success ?: return false
         return successState.zip == zip.trim()
     }
@@ -82,8 +97,16 @@ class CalculatorViewModel @Inject constructor(
         }
     }
 
+    fun updateDiscountPercent(value: Double) {
+        _discountPercent.value = value.coerceIn(MIN_DISCOUNT_PERCENT, MAX_DISCOUNT_PERCENT)
+    }
+
     fun clearLineItems() {
         _lineItems.value = listOf(LineItem())
+    }
+
+    fun clearDiscount() {
+        _discountPercent.value = MIN_DISCOUNT_PERCENT
     }
 
     fun clearZipLookup() {
@@ -91,6 +114,7 @@ class CalculatorViewModel @Inject constructor(
     }
 
     fun saveCompletedCalculation(zip: String) {
+        // Only save when the current ZIP matches the successful lookup.
         if (!hasSuccessfulRateForZip(zip)) return
 
         val successState = _zipLookupState.value as? ZipLookupState.Success ?: return
@@ -110,6 +134,7 @@ class CalculatorViewModel @Inject constructor(
     }
 
     private fun currentTaxRate(): Double {
+        // Uses the combined rate from the successful lookup for tax math.
         val successState = _zipLookupState.value as? ZipLookupState.Success ?: return 0.0
         val rawRate = successState.rate.combinedRate.trim().removeSuffix("%")
         val parsedRate = rawRate.toDoubleOrNull() ?: return 0.0
@@ -121,6 +146,7 @@ class CalculatorViewModel @Inject constructor(
         }
     }
 
+    // Describes the ZIP lookup state in a simple way for the UI.
     sealed interface ZipLookupState {
         data object Idle : ZipLookupState
         data class Loading(val zip: String) : ZipLookupState
@@ -130,5 +156,7 @@ class CalculatorViewModel @Inject constructor(
 
     private companion object {
         const val ZIP_CODE_LENGTH = 5
+        const val MIN_DISCOUNT_PERCENT = 0.0
+        const val MAX_DISCOUNT_PERCENT = 100.0
     }
 }

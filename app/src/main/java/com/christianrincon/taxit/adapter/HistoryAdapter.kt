@@ -15,7 +15,7 @@ class HistoryAdapter(
     private val onDeleteClicked: (id: Long) -> Unit
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
-    // List of past calculations to display
+    // The history rows currently shown by RecyclerView.
     private val entries = mutableListOf<HistoryEntry>()
     private val dateFormatter = SimpleDateFormat("MMM d, yyyy h:mm a", Locale.US)
 
@@ -31,7 +31,7 @@ class HistoryAdapter(
 
     override fun getItemCount(): Int = entries.size
 
-    // Replaces the entire list with new data
+    // Replaces the whole list when Room sends updated history.
     fun submitList(newEntries: List<HistoryEntry>) {
         entries.clear()
         entries.addAll(newEntries)
@@ -48,7 +48,7 @@ class HistoryAdapter(
         private val btnDelete = itemView.findViewById<TextView>(R.id.btn_delete_history)
 
         fun bind(entry: HistoryEntry) {
-            // Show ZIP and city together
+            // Show ZIP alone if no city/state was saved.
             tvZip.text = if (entry.cityState.isBlank()) {
                 "ZIP: ${entry.zip}"
             } else {
@@ -56,11 +56,12 @@ class HistoryAdapter(
             }
             tvDate.text = dateFormatter.format(Date(entry.timestamp))
 
-            // Format amounts as dollar values
+            // Display saved amounts as simple dollar values.
             tvAmount.text = "$%.2f".format(entry.subtotal)
             tvTax.text = "$%.2f".format(entry.tax)
             tvTotal.text = "$%.2f".format(entry.total)
 
+            // Tell the Fragment which saved record should be deleted.
             btnDelete.setOnClickListener {
                 onDeleteClicked(entry.id)
             }

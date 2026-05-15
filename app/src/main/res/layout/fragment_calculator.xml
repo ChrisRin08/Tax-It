@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="@string/app_name"
             android:textColor="@color/text_primary"
-            android:textSize="22sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="16dp"/>
 
@@ -42,6 +42,28 @@
 
             <TextView
                 android:id="@+id/tv_subtotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/value_default"
+                style="@style/TaxIt.Value"/>
+        </LinearLayout>
+
+        <!-- Discount row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/label_discount"
+                style="@style/TaxIt.Label"/>
+
+            <TextView
+                android:id="@+id/tv_discount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/value_default"
@@ -100,12 +122,29 @@
 
     </LinearLayout>
 
+    <!-- Subtle decorative watermark behind the calculator content -->
+    <TextView
+        android:id="@+id/watermark_calculator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/accent_light"
+        android:textSize="92sp"
+        android:textStyle="bold"
+        android:alpha="0.55"
+        android:rotation="-12"
+        android:importantForAccessibility="no"
+        app:layout_constraintTop_toBottomOf="@id/dark_panel"
+        app:layout_constraintBottom_toTopOf="@id/layout_buttons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <!-- SCROLLABLE MIDDLE SECTION -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_content"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/background_white"
+        android:background="@android:color/transparent"
         android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/dark_panel"
         app:layout_constraintBottom_toTopOf="@id/layout_buttons"
@@ -116,7 +155,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/background_white"
+            android:background="@android:color/transparent"
             android:padding="16dp">
 
             <!-- ZIP SECTION STATE A (expanded) -->
@@ -132,7 +171,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/label_tax_rate_lookup"
                     android:textColor="@color/text_secondary_dark"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:letterSpacing="0.08"
                     android:textAllCaps="true"
                     android:layout_marginBottom="8dp"/>
@@ -159,7 +198,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/status_loading"
                     android:textColor="@color/text_secondary_dark"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:visibility="gone"
                     android:layout_marginTop="4dp"/>
 
@@ -192,14 +231,14 @@
                                 android:layout_weight="1"
                                 android:text="@string/label_state_rate"
                                 android:textColor="@color/text_secondary_dark"
-                                android:textSize="13sp"/>
+                                android:textSize="15sp"/>
                             <TextView
                                 android:id="@+id/tv_state_rate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0.000%"
                                 android:textColor="@color/text_dark"
-                                android:textSize="14sp"/>
+                                android:textSize="16sp"/>
                         </LinearLayout>
 
                         <!-- County rate -->
@@ -214,14 +253,14 @@
                                 android:layout_weight="1"
                                 android:text="@string/label_county_rate"
                                 android:textColor="@color/text_secondary_dark"
-                                android:textSize="13sp"/>
+                                android:textSize="15sp"/>
                             <TextView
                                 android:id="@+id/tv_county_rate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0.000%"
                                 android:textColor="@color/text_dark"
-                                android:textSize="14sp"/>
+                                android:textSize="16sp"/>
                         </LinearLayout>
 
                         <!-- City rate -->
@@ -236,14 +275,14 @@
                                 android:layout_weight="1"
                                 android:text="@string/label_city_rate"
                                 android:textColor="@color/text_secondary_dark"
-                                android:textSize="13sp"/>
+                                android:textSize="15sp"/>
                             <TextView
                                 android:id="@+id/tv_city_rate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0.000%"
                                 android:textColor="@color/text_dark"
-                                android:textSize="14sp"/>
+                                android:textSize="16sp"/>
                         </LinearLayout>
 
                         <!-- Divider -->
@@ -264,14 +303,14 @@
                                 android:layout_weight="1"
                                 android:text="@string/label_combined_rate"
                                 android:textColor="@color/text_secondary_dark"
-                                android:textSize="13sp"/>
+                                android:textSize="15sp"/>
                             <TextView
                                 android:id="@+id/tv_combined_rate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0.000%"
                                 android:textColor="@color/red_accent"
-                                android:textSize="16sp"
+                                android:textSize="18sp"
                                 android:textStyle="bold"/>
                         </LinearLayout>
 
@@ -303,7 +342,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/text_dark"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:text="Los Angeles, CA — 6.25%"/>
 
                 <TextView
@@ -312,7 +351,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/label_edit"
                     android:textColor="@color/red_accent"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:padding="8dp"/>
 
             </LinearLayout>
@@ -338,9 +377,35 @@
                 android:layout_height="wrap_content"
                 android:text="@string/button_add_item"
                 android:textColor="@color/red_accent"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:padding="8dp"
                 android:layout_marginTop="8dp"/>
+
+            <!-- Whole-order discount -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_discount_percent"
+                android:textColor="@color/text_secondary_dark"
+                android:textSize="14sp"
+                android:letterSpacing="0.08"
+                android:textAllCaps="true"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp"/>
+
+            <EditText
+                android:id="@+id/et_discount_percent"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="@string/hint_discount_percent"
+                android:inputType="numberDecimal"
+                android:maxLength="6"
+                android:textColor="@color/text_dark"
+                android:textColorHint="@color/text_hint"
+                android:backgroundTint="@color/red_accent"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:autofillHints=""/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -366,9 +431,10 @@
             android:text="@string/button_calculate"
             android:backgroundTint="@color/button_calculate"
             android:textColor="@color/text_primary"
+            android:textSize="16sp"
             android:layout_marginEnd="8dp"/>
 
-        <!-- Clear All — red -->
+        <!-- Clear All — purple -->
         <Button
             android:id="@+id/btn_clear"
             android:layout_width="0dp"
@@ -376,7 +442,8 @@
             android:layout_weight="1"
             android:text="@string/button_clear"
             android:backgroundTint="@color/button_clear"
-            android:textColor="@color/text_primary"/>
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"/>
 
     </LinearLayout>
 
